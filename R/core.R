@@ -14,7 +14,11 @@ style <- function(dir, file, warn = FALSE) {
   if(missing(file))
     stop("missing `file`")
 
-  executable <- system.file("styler", package = "style")
+  executable <- Sys.which("styler")
+
+  if(executable == "")
+    executable <- system.file("styler", package = "style")
+
   args <- c(dir = dir, file = file)
   system2(executable, args)
 }

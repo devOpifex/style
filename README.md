@@ -20,6 +20,13 @@ You can install the development version of style like so:
 remotes::install_github("devOpifex/style")
 ```
 
+If you have [styler](https://github.com/devOpifex/styler) installed
+that version is used, otherwise it falls back on the provided
+executable.
+
+If you have go installed run `style::install()` to install 
+[styler](https://github.com/devOpifex/styler).
+
 ## Example
 
 ``` r
@@ -28,8 +35,8 @@ library(shiny)
 
 ui <- fluidPage(
     div(
-        class = "b-r-2 b-c-red-400 b-s-5 sh-lg p-x-2 p-y-4",
-        h1("Hello, style!", class = "t-s-8")
+        class = "border-radius-2 border-red-400 border-width-1 sh-lg p-x-2 p-y-4",
+        h1("Hello, style!", class = "text-size-8")
     )
 )
 
