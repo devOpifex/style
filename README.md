@@ -26,6 +26,7 @@ executable.
 
 If you have go installed run `style::install()` to install 
 [styler](https://github.com/devOpifex/styler).
+This is recommended to make sure you get the latest version.
 
 ## Example
 
@@ -35,8 +36,8 @@ library(shiny)
 
 ui <- fluidPage(
     div(
-        class = "border-radius-2 border-red-400 border-width-1 sh-lg p-x-2 p-y-4",
-        h1("Hello, style!", class = "text-size-8")
+        class = "lg:border-radius-4 border-radius-2 border-red-400 border-width-1 sh-lg p-x-2 p-y-4",
+        h1("Hello, style!", class = "text-size-8 hover:text-teal-600")
     )
 )
 
@@ -51,4 +52,4 @@ Then run
 style::style(dir = "app", file = "www/style.min.css")
 ```
 
-Read more on [styler](https://github.com/devOpifex/styler)
+Read more on [styler](https://github.com/devOpifex/styler) and how it works.
