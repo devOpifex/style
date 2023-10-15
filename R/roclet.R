@@ -33,7 +33,11 @@ roclet_process.roclet_style <- function(x, blocks, env, base_path, ...) {
 
     for (tag in tags) {
       results <- tryCatch(
-        style::style(dir = tag$val$dir, out = tag$val$out),
+        style::style(
+          file = tag$val$file, 
+          out = tag$val$out, 
+          verbose = tags$va$verbose
+        ),
         error = \(e) e
       )
 
@@ -68,6 +72,7 @@ roxy_tag_parse.roxy_tag_style <- function(x) {
   }
 
   x$val <- list(
+    input = x$file,
     path = args[1],
     verbose = as.logical(args[2])
   )
