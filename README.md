@@ -57,7 +57,8 @@ Read more on [styler](https://github.com/devOpifex/styler) and how it works.
 ## Roclet
 
 There is a roxygen2 roclet for use in shiny applications as package,
-e.g.: with [golem](https://github.com/ThinkR-open/golem).
+e.g.: with [golem](https://github.com/ThinkR-open/golem) or 
+[leprechaun](https://github.com/devOpifex/leprechaun)
 
 First, add the roclet to your `DESCRIPTION`
 
