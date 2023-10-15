@@ -14,5 +14,7 @@ Authors@R:
 Description: 'CSS' class generator inspired by 'Tailwind' to use with 'Shiny'.
 License: GPL (>= 3)
 Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
+Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd"))
 RoxygenNote: 7.2.3
+Imports:
+  roxygen2

@@ -4,14 +4,14 @@
 \alias{style}
 \title{Style}
 \usage{
-style(dir, file, warn = FALSE)
+style(dir, out, verbose = FALSE)
 }
 \arguments{
 \item{dir}{Directory containing R files to scan.}
 
-\item{file}{Output CSS file.}
+\item{out}{Path to output CSS file.}
 
-\item{warn}{Whether to warn on classes that fail to parse.}
+\item{verbose}{Whether to warn on classes that fail to parse.}
 }
 \description{
 Generate CSS
