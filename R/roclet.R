@@ -125,8 +125,9 @@ generate_dependency <- function(file) {
 
   wl("htmltools::htmlDependency(")
   wl('\tname="', gsub(".R$", "", file), '",')
-  wl("\tversion='1.0'")
+  wl("\tversion='1.0',")
+  wl("\tsrc='.',")
   wl('\tpackage="', pkg, '",')
-  wl('\tstylesheet="', gsub(".R$", ".min.css", file), '",')
+  wl('\tstylesheet="', gsub(".R$", ".min.css", file), '"')
   wl(")")
 }
