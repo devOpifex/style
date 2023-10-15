@@ -92,3 +92,15 @@ ui <- \(req){
 
 You can use `generate_dependency` to generate the code to import the generated style.
 
+```r
+#> generate_dependency("ui.R")
+htmltools::htmlDependency(
+	name="ui",
+	version='1.0',
+	src='.',
+	package="style",
+	stylesheet="ui.min.css"
+)
+```
+
+This is intended for modules so you can create individual CSS files for each module.
