@@ -53,3 +53,42 @@ style::style(dir = "app", file = "www/style.min.css")
 ```
 
 Read more on [styler](https://github.com/devOpifex/styler) and how it works.
+
+## Roclet
+
+There is a roxygen2 roclet for use in shiny applications as package,
+e.g.: with [golem](https://github.com/ThinkR-open/golem).
+
+First, add the roclet to your `DESCRIPTION`
+
+```
+Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd", "style::roclet_style"))
+```
+
+Then use the `@style` tag in your files.
+By default the tag will parse the file it is placed in and 
+generate the CSS in a file of the same name in `inst`, e.g.:
+placing `@style` in a `R/ui.R` will generate the CSS in `inst/ui.min.css`.
+
+It accepts two arguments, first the named of the desired file to generated 
+(relative to `inst/`), e.g.: `@style assets/styles.min.css`
+
+The second argument is a boolean passed to `style()`.
+
+__Example file__
+
+```r
+#' UI
+#'
+#' @style
+#' 
+#' @keywords internal
+ui <- \(req){
+    fluidPage(
+        # ...
+    )
+}
+```
+
+You can use `generate_dependency` to generate the code to import the generated style.
+

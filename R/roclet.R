@@ -16,7 +16,7 @@ style_rd <- function() {
 #' with the roxygen2 package.
 #'
 #' @importFrom roxygen2 roclet roxy_tag_warning block_get_tags roclet_output
-#' @importFrom roxygen2 roclet_process roxy_tag_parse
+#' @importFrom roxygen2 roclet_process roxy_tag_parse rd_section roxy_tag_rd
 #'
 #' @rdname roclets
 #' @export
@@ -32,17 +32,13 @@ roclet_process.roclet_style <- function(x, blocks, env, base_path, ...) {
     tags <- block_get_tags(block, "style")
 
     for (tag in tags) {
-      results <- tryCatch(
-        style::style(
-          file = tag$val$file, 
-          out = tag$val$out, 
-          verbose = tags$va$verbose
-        ),
-        error = \(e) e
+      res <- list(
+        file = tag$val$file,
+        output = tag$val$output, 
+        verbose = tag$val$verbose
       )
 
-      if(inherits(results, "error"))
-        roxy_tag_warning(tag, "Failed to run style")
+      results <- append(results, list(res))
     }
   }
   
@@ -51,32 +47,86 @@ roclet_process.roclet_style <- function(x, blocks, env, base_path, ...) {
 
 #' @export
 roclet_output.roclet_style <- function(x, results, base_path, ...) {
-  for (style in names(results)) {
-    cat(
-      "Rendered with [style](github.com/devOpifex/style) version", 
-      utils::packageVersion("style"),
-      "\n"
+  for (style in results) {
+    res <- tryCatch(
+      style::style(
+        file = style$file, 
+        output = style$output, 
+        verbose = style$verbose
+      ),
+      error = \(e) e
     )
+
+    if(inherits(res, "error"))
+      cat(res$message, "\n")
   }
 
-  return()
+  invisible(NULL)
 }
 
 #' @export
 roxy_tag_parse.roxy_tag_style <- function(x) {
   args <- strsplit(x$raw, " ")[[1]]
 
-  if(length(args) < 2L) {
-    roxy_tag_warning(x, "Invalid @style format")
-    return()
-  }
+  if(length(args) > 2L)
+    roxy_tag_warning("invalid @style tag") 
+
+  verbose <- FALSE
+  if(length(args) == 2)
+    verbose <- args[2]
+
+  output <- x$file |>
+    basename() |>
+    (\(.) gsub("(.R|.r)$", ".min.css", .))()
+
+  if(length(args) > 0)
+    output <- gsub("^inst", "", args[1])
 
   x$val <- list(
-    input = x$file,
-    path = args[1],
-    verbose = as.logical(args[2])
+    file = x$file,
+    output = paste0("inst/", output),
+    verbose = as.logical(verbose)
   )
 
   return(x)
 }
 
+#' @export
+roxy_tag_rd.roxy_tag_style <- function(x, base_path, env) {
+  rd_section("style", x$val)
+}
+
+#' @export
+format.rd_section_style <- function(x, ...) {
+  paste0(
+    "\\section{Style}{\n",
+    "Style generated with {style} version", 
+    utils::packageVersion("style") |> as.character(),
+    ". File generated in ", x$value$output,
+    "}\n"
+  )
+}
+
+wl <- \(...){
+  paste0(...) |>
+    writeLines()
+}
+
+#' Generate dependency
+#' 
+#' @param file R file from which the CSS is generated.
+#' 
+#' @export
+generate_dependency <- function(file) {
+  file <- gsub("^R/", "", file)
+
+  pkg <- readLines("DESCRIPTION")[1]
+  pkg <- gsub("Package: ", "", pkg) |> trimws()
+
+  wl("htmltools::htmlDependency(")
+  wl('\tname="', gsub(".R$", "", file), '",')
+  wl("\tversion='1.0'")
+  wl('\tpackage="', pkg, '",')
+  wl('\tstylesheet="', gsub(".R$", ".min.css", file), '",')
+  wl(")")
+}

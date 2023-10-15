@@ -4,14 +4,14 @@
 \alias{style}
 \title{Style}
 \usage{
-style(dir = NULL, file = NULL, out = "style.min.css", verbose = FALSE)
+style(dir = NULL, file = NULL, output = "style.min.css", verbose = FALSE)
 }
 \arguments{
 \item{dir}{Directory containing R files to scan.}
 
 \item{file}{File to scan.}
 
-\item{out}{Path to output CSS file.}
+\item{output}{Path to output CSS file.}
 
 \item{verbose}{Whether to warn on classes that fail to parse.}
 }
